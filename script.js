@@ -5,14 +5,10 @@ let workingValue = '';
 
 const displayedValue = document.querySelector('.displayed-value');
 const displayedOperation = document.querySelector('.stored-operation');
-const numBtns = document.querySelectorAll('.num-btn');
+const numberButtons = document.querySelectorAll('.num-btn');
 const operatorButtons = document.querySelectorAll('.operator-btn');
 const clearBtn = document.querySelector('.clear-btn');
 const deleteBtn = document.querySelector('.delete-btn');
-const addBtn = document.querySelector('.add-btn');
-const subtractBtn = document.querySelector('.subtract-btn');
-const multiplyBtn = document.querySelector('.multiply-btn');
-const divideBtn = document.querySelector('.divide-btn');
 const dotBtn = document.querySelector('.dot-btn');
 const equalBtn = document.querySelector('.equal-btn');
 
@@ -29,15 +25,15 @@ operatorButtons.forEach(operator => {
     operator.addEventListener('click', (e) => setOperation(e.target.textContent))
 })
 
-function initCalc() {
-    for (let button of numBtns) {
-        button.addEventListener('click', (e) => {
-            displayedValue.textContent = null;
-            workingValue += e.target.value;
-            displayedValue.textContent = workingValue;
-        });
-    }
-};
+numberButtons.forEach(number => {
+    number.addEventListener('click', (e) => displayNumber(e.target.textContent))
+})
+
+function displayNumber(number) {
+    displayedValue.textContent = null;
+    workingValue += number;
+    displayedValue.textContent = workingValue;
+}
 
 function clearCal() {
     storedValue = '';
@@ -65,6 +61,9 @@ function setOperation(operator) {
 
 function getOperator(symbol) {
     if (symbol === 'x') return '*'
+    if (symbol === '÷') return '/'
+    if (symbol === '+') return '+'
+    if (symbol === '-') return '-'
 }
 
 function evaluate() {
@@ -87,4 +86,3 @@ function updateDisplayedEquation(stored, working) {
     displayedOperation.textContent = `${stored} ${storedOperation} ${working} =`;
 }
 
-initCalc();
