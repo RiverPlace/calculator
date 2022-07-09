@@ -53,7 +53,8 @@ function deleteNum() {
 
 function setOperation(operator) {
     let properOperator = getOperator(operator)
-    storedValue = workingValue;
+    if (storedValue && workingValue) {evaluate()}
+    else {storedValue = workingValue}
     storedOperation = properOperator;
     workingValue = '';
     displayedOperation.textContent = `${storedValue} ${storedOperation}`;
@@ -67,22 +68,26 @@ function getOperator(symbol) {
 }
 
 function evaluate() {
-    let stored = Number(storedValue);
-    let working = Number(workingValue);
-    updateDisplayedEquation(stored, working);
+    let previousNumber = Number(storedValue);
+    let currentNumber = Number(workingValue);
+    let result;
+    // updateDisplayedEquation(stored, working);
     
     if (storedOperation === '+') {
-        displayedValue.textContent = add(stored, working);
+        result = add(previousNumber, currentNumber);
     } else if (storedOperation === '-') {
-        displayedValue.textContent = subtract(stored, working);
+        result = subtract(previousNumber, currentNumber);
     } else if (storedOperation === '*') {
-        displayedValue.textContent = multiply(stored, working);
+        result = multiply(previousNumber, currentNumber);
     } else if (storedOperation === '/') {
-        displayedValue.textContent = divide(stored, working);
+        result = divide(previousNumber, currentNumber);
     }
+
+    displayedValue.textContent = result;
+    storedValue = result;
 };
 
-function updateDisplayedEquation(stored, working) {
-    displayedOperation.textContent = `${stored} ${storedOperation} ${working} =`;
-}
+// function updateDisplayedEquation(stored, working) {
+//     displayedOperation.textContent = `${stored} ${storedOperation} ${working} =`;
+// }
 
