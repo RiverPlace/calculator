@@ -1,8 +1,3 @@
-const ADD_OPERATOR = '+';
-const SUBTRACT_OPERATOR = '-';
-const MULTIPLY_OPERATOR = '*';
-const DIVIDE_OPERATOR = '/';
-
 let storedValue = '';
 let storedOperation = '';
 let displayedEquation = '';
@@ -11,6 +6,7 @@ let workingValue = '';
 const displayedValue = document.querySelector('.displayed-value');
 const displayedOperation = document.querySelector('.stored-operation');
 const numBtns = document.querySelectorAll('.num-btn');
+const operatorButtons = document.querySelectorAll('.operator-btn');
 const clearBtn = document.querySelector('.clear-btn');
 const deleteBtn = document.querySelector('.delete-btn');
 const addBtn = document.querySelector('.add-btn');
@@ -22,16 +18,16 @@ const equalBtn = document.querySelector('.equal-btn');
 
 clearBtn.addEventListener('click', clearCal);
 deleteBtn.addEventListener('click', deleteNum);
-addBtn.addEventListener('click', () => initOperation(ADD_OPERATOR));
-subtractBtn.addEventListener('click', () => initOperation(SUBTRACT_OPERATOR));
-multiplyBtn.addEventListener('click', () => initOperation(MULTIPLY_OPERATOR));
-divideBtn.addEventListener('click', () => initOperation(DIVIDE_OPERATOR));
-equalBtn.addEventListener('click', performOperation);
+equalBtn.addEventListener('click', evaluate);
 
 const add = (a, b) => a + b;
 const subtract = (a, b) => a - b;
 const multiply = (a, b) => a * b;
 const divide = (a, b) => a / b;
+
+operatorButtons.forEach(operator => {
+    operator.addEventListener('click', (e) => setOperation(e.target.textContent))
+})
 
 function initCalc() {
     for (let button of numBtns) {
@@ -59,14 +55,19 @@ function deleteNum() {
     displayedValue.textContent = workingValue;
 };
 
-function initOperation(operator) {
+function setOperation(operator) {
+    let properOperator = getOperator(operator)
     storedValue = workingValue;
-    storedOperation = operator;
+    storedOperation = properOperator;
     workingValue = '';
     displayedOperation.textContent = `${storedValue} ${storedOperation}`;
 };
 
-function performOperation() {
+function getOperator(symbol) {
+    if (symbol === 'x') return '*'
+}
+
+function evaluate() {
     let stored = Number(storedValue);
     let working = Number(workingValue);
     updateDisplayedEquation(stored, working);
