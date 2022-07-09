@@ -24,6 +24,7 @@ clearBtn.addEventListener('click', clearCal);
 deleteBtn.addEventListener('click', deleteNum);
 addBtn.addEventListener('click', () => initOperation(ADD_OPERATOR));
 subtractBtn.addEventListener('click', () => initOperation(SUBTRACT_OPERATOR));
+multiplyBtn.addEventListener('click', () => initOperation(MULTIPLY_OPERATOR));
 equalBtn.addEventListener('click', performOperation);
 
 const add = (a, b) => a + b;
@@ -73,6 +74,8 @@ function performOperation() {
         displayedValue.textContent = add(stored, working);
     } else if (storedOperation === '-') {
         displayedValue.textContent = subtract(stored, working);
+    } else if (storedOperation === '*') {
+        displayedValue.textContent = multiply(stored, working);
     }
 };
 
