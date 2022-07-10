@@ -1,5 +1,5 @@
 let storedValue = ''
-let storedOperation = ''
+let storedOperator = ''
 let displayedEquation = ''
 let workingValue = ''
 
@@ -16,6 +16,7 @@ clearButton.addEventListener('click', clearCal)
 deleteButton.addEventListener('click', deleteNum)
 equalButton.addEventListener('click', evaluate)
 pointButton.addEventListener('click', appendPoint)
+window.addEventListener('keydown', handleKeyPress)
 
 const add = (a, b) => a + b
 const subtract = (a, b) => a - b
@@ -23,7 +24,7 @@ const multiply = (a, b) => a * b
 const divide = (a, b) => a / b
 
 operatorButtons.forEach(operator => {
-    operator.addEventListener('click', (e) => setOperation(e.target.textContent))
+    operator.addEventListener('click', (e) => setOperation(e.target.value))
 })
 
 numberButtons.forEach(number => {
@@ -38,7 +39,7 @@ function appendNumber(number) {
 
 function clearCal() {
     storedValue = ''
-    storedOperation = ''
+    storedOperator = ''
     workingValue = ''
     displayedValue.textContent = 0
     displayedOperation.textContent = ''
@@ -59,19 +60,19 @@ function appendPoint() {
 }
 
 function setOperation(operator) {
-    let properOperator = getOperator(operator)
+    // let properOperator = getOperator(operator)
     if (storedValue && workingValue) evaluate()
     else if (workingValue !== '') storedValue = workingValue
-    storedOperation = properOperator
+    storedOperator = operator
     workingValue = ''
-    displayedOperation.textContent = `${storedValue} ${storedOperation}`
+    displayedOperation.textContent = `${roundNumber(storedValue)} ${getOperator(operator)}`
 }
 
 function getOperator(symbol) {
-    if (symbol === 'x') return '*'
-    if (symbol === '÷') return '/'
     if (symbol === '+') return '+'
     if (symbol === '-') return '-'
+    if (symbol === '*') return 'x'
+    if (symbol === '/') return '÷'
 }
 
 function evaluate() {
@@ -79,19 +80,38 @@ function evaluate() {
     let currentNumber = Number(workingValue);
     let result
 
-    displayedOperation.textContent = `${storedValue} ${storedOperation} ${workingValue} =`
+    if (!previousNumber || !currentNumber) return
+    displayedOperation.textContent = `${storedValue} ${getOperator(storedOperator)} ${workingValue} =`
     
-    if (storedOperation === '+') {
+    if (storedOperator === '+') {
         result = add(previousNumber, currentNumber)
-    } else if (storedOperation === '-') {
+    } else if (storedOperator === '-') {
         result = subtract(previousNumber, currentNumber)
-    } else if (storedOperation === '*') {
+    } else if (storedOperator === '*') {
         result = multiply(previousNumber, currentNumber)
-    } else if (storedOperation === '/') {
+    } else if (storedOperator === '/') {
+        if (previousNumber === 0 || currentNumber === 0) {
+            alert('Nice try... you can\'t divide by zero.');
+            return
+        }
         result = divide(previousNumber, currentNumber)
     }
 
-    displayedValue.textContent = result
+    displayedValue.textContent = roundNumber(result)
     storedValue = result
     workingValue = ''
+}
+
+function roundNumber(num) {
+    return Math.round(num * 1000) / 1000
+}
+
+function handleKeyPress(e) {
+    if (e.key >= 0 && e.key <= 9) appendNumber(e.key)
+    if (e.key === '.') appendPoint()
+    if (e.key === '=' || e.key === 'Enter') evaluate()
+    if (e.key === '+') setOperation('+')
+    if (e.key === '-') setOperation('-')
+    if (e.key === '*') setOperation('*')
+    if (e.key === '/') setOperation('/')
 }
