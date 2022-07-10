@@ -52,9 +52,12 @@ function deleteNum() {
 };
 
 function setOperation(operator) {
+    console.log('Stored: ', storedValue)
+    console.log('Working: ', workingValue)
+
     let properOperator = getOperator(operator)
     if (storedValue && workingValue) {evaluate()}
-    else {storedValue = workingValue}
+    else if (workingValue !== '') {storedValue = workingValue}
     storedOperation = properOperator;
     workingValue = '';
     displayedOperation.textContent = `${storedValue} ${storedOperation}`;
@@ -70,8 +73,8 @@ function getOperator(symbol) {
 function evaluate() {
     let previousNumber = Number(storedValue);
     let currentNumber = Number(workingValue);
-    let result;
-    // updateDisplayedEquation(stored, working);
+    displayedOperation.textContent = `${storedValue} ${storedOperation} ${workingValue} =`
+    let result
     
     if (storedOperation === '+') {
         result = add(previousNumber, currentNumber);
@@ -85,9 +88,5 @@ function evaluate() {
 
     displayedValue.textContent = result;
     storedValue = result;
+    workingValue = '';
 };
-
-// function updateDisplayedEquation(stored, working) {
-//     displayedOperation.textContent = `${stored} ${storedOperation} ${working} =`;
-// }
-
