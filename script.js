@@ -33,7 +33,7 @@ numberButtons.forEach(number => {
 function appendNumber(number) {
     displayedValue.textContent = null;
     workingValue += number;
-    displayedValue.textContent = workingValue;
+    displayedValue.textContent += workingValue;
 }
 
 function clearCal() {
@@ -52,6 +52,7 @@ function deleteNum() {
 }
 
 function appendPoint() {
+    workingValue += '.'
     displayedValue.textContent += '.'
 }
 
@@ -59,7 +60,7 @@ function setOperation(operator) {
     let properOperator = getOperator(operator)
     if (storedValue && workingValue) evaluate()
     else if (workingValue !== '') storedValue = workingValue
-    storedOperation = properOperator;
+    storedOperation = properOperator
     workingValue = ''
     displayedOperation.textContent = `${storedValue} ${storedOperation}`
 }
