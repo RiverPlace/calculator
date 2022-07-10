@@ -52,8 +52,10 @@ function deleteNum() {
 }
 
 function appendPoint() {
-    workingValue += '.'
-    displayedValue.textContent += '.'
+    if (!workingValue.includes('.')) {
+        workingValue += '.'
+        displayedValue.textContent += '.'
+    }
 }
 
 function setOperation(operator) {
